@@ -59,8 +59,8 @@ const agregarAdoptante = (req, res) => {
             console.log('Error de conexión con la base de datos', err);
             return res.status(500).json({ error: 'Error interno del servidor, no se pudo establecer conexión con la base de datos' });
         } 
-        const perrito = { perritoId: result.insertId, ...req.body }
-        res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente',  perrito});
+        const adoptante = { adoptanteId: result.insertId, ...req.body }
+        res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente',  adoptante});
     });
 };
 
