@@ -15,8 +15,8 @@ const buscarTodos = (req, res) => {
 };
 
 const buscarPorId = (req, res) => {
-  const { ID } = req.params;
-  const sql = "SELECT * FROM donaciones WHERE ID = ?";
+  const { id } = req.params;
+  const sql = "SELECT * FROM donaciones WHERE id = ?";
 
   bd.query(sql, [id], (err, result) => {
     if (err) {
