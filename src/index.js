@@ -20,6 +20,7 @@ Por ejemplo, si tienes un archivo HTML llamado index.html en el directorio publi
 
 //Importo enrutadores creados en la carpeta routes para su montaje
 const perritosRouter = require('../routes/perritos.routes');
+const adoptantesRouter = require('../routes/adoptantes.routes');
 
 app.use(express.static('public'));
 
@@ -27,11 +28,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-    res.send("Realizaste una solicitud GET a la ruta raiz");
+    res.send("Realizaste una solicitud GET a la ruta raíz");
 });
 
 /*Montaje de enrutador. Cualquier solicitud que coincida con estas rutas será manejada por este enrutador*/
 app.use('/perritos', perritosRouter);
+app.use('/adoptantes', adoptantesRouter);
 
 
 //agrego escuchador al servidor en el puerto especificado
