@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 20, 2024 at 01:46 AM
+-- Generation Time: Jun 18, 2024 at 12:31 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -31,9 +31,9 @@ CREATE TABLE `adoptantes` (
   `id` int NOT NULL,
   `nombre_apellido` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `telefono` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `dni` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `vivienda` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `vivienda` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ID_perrito` int UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Esta tabla contiene los postulantes/adoptantes que se registran desde la página web';
 
@@ -48,28 +48,6 @@ INSERT INTO `adoptantes` (`id`, `nombre_apellido`, `telefono`, `email`, `dni`, `
 (4, 'Jorge Porcel', '2345789614', 'jorge@email.com', '19.098.725', 'departamento', 2),
 (5, 'Sebastián Yatra', '35496874122', 'syatra@email.com', '39.758.026', 'casa', 1),
 (6, 'Mirtha Legrand', '45678912', 'mirtha@email.com', '1.589.364', 'casa', 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `historialdonaciones`
---
-
-CREATE TABLE `historialdonaciones` (
-  `ID` int NOT NULL,
-  `nombre` varchar(30) COLLATE latin1_spanish_ci NOT NULL,
-  `fechaDonación` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `montoDonacion` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
---
--- Dumping data for table `historialdonaciones`
---
-
-INSERT INTO `historialdonaciones` (`ID`, `nombre`, `fechaDonación`, `montoDonacion`) VALUES
-(1, 'Juan Perez', '2024-06-16 23:59:44', 500),
-(2, 'María Diaz', '2024-06-17 00:36:25', 1000),
-(3, 'Hector Rodriguez', '2024-06-17 00:38:51', 850.5);
 
 -- --------------------------------------------------------
 
@@ -112,12 +90,6 @@ ALTER TABLE `adoptantes`
   ADD KEY `id_perrito` (`ID_perrito`);
 
 --
--- Indexes for table `historialdonaciones`
---
-ALTER TABLE `historialdonaciones`
-  ADD PRIMARY KEY (`ID`);
-
---
 -- Indexes for table `perritos`
 --
 ALTER TABLE `perritos`
@@ -126,12 +98,6 @@ ALTER TABLE `perritos`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `historialdonaciones`
---
-ALTER TABLE `historialdonaciones`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `perritos`

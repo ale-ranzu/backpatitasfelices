@@ -3,7 +3,7 @@
 const bd = require("../db/db");
 
 const buscarTodos = (req, res) => {
-  const sql = "SELECT * FROM donaciones";
+  const sql = "SELECT * FROM perritos";
 
   bd.query(sql, (err, result) => {
     if (err) {
@@ -16,7 +16,7 @@ const buscarTodos = (req, res) => {
 
 const buscarPorId = (req, res) => {
   const { id } = req.params;
-  const sql = "SELECT * FROM donaciones WHERE id = ?";
+  const sql = "SELECT * FROM historialdonaciones WHERE id = ?";
 
   bd.query(sql, [id], (err, result) => {
     if (err) {
@@ -33,7 +33,7 @@ const registrarDonacion = (req, res) => {
   const { nombre, fechaDonacion, montoDonacion } = req.body;
 
   const sql =
-    "INSERT INTO donaciones (nombre, fechaDonacion, montoDonacion) VALUES (?, ?, ?)";
+    "INSERT INTO historialdonaciones (nombre, fechaDonacion, montoDonacion) VALUES (?, ?, ?)";
 
   bd.queri(sql, [nombre, fechaDonacion, montoDonacion], (err, result) => {
     if (err) {

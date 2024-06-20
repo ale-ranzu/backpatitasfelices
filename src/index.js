@@ -1,12 +1,11 @@
 //Importo express
-const express = require('express');
+const express = require("express");
 
 //Se intancia la aplicación express en app:
 const app = express(); //express() es una función que devuelve un objeto. En este caso, express() devuelve un objeto que representa una aplicación Express.
 
 //Definicion del puerto para el servidor
 const PUERTO = 3000;
-
 
 //Se monta un middleware que indica a express que sirva los archivos estaticos alojados en la carpeta public cada vez que llegue una solicitud a la url: urldelservidor/nombredelarchivo, ej: http://localhost:3000/index.html
 
@@ -19,22 +18,27 @@ Por ejemplo, si tienes un archivo HTML llamado index.html en el directorio publi
 */
 
 //Importo enrutadores creados en la carpeta routes para su montaje
-const perritosRouter = require('../routes/perritos.routes');
-const adoptantesRouter = require('../routes/adoptantes.routes');
+const perritosRouter = require("../routes/perritos.routes");
+const adoptantesRouter = require("../routes/adoptantes.routes");
+const donacionesRouter = require("../routes/donaciones.routes");
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-    res.send("Realizaste una solicitud GET a la ruta raíz");
+  res.send("Realizaste una solicitud GET a la ruta raíz");
 });
 
 /*Montaje de enrutador. Cualquier solicitud que coincida con estas rutas será manejada por este enrutador*/
-app.use('/perritos', perritosRouter);
-app.use('/adoptantes', adoptantesRouter);
-
+app.use("/perritos", perritosRouter);
+app.use("/adoptantes", adoptantesRouter);
+app.use("/donaciones", donacionesRouter);
 
 //agrego escuchador al servidor en el puerto especificado
-app.listen(PUERTO, () => console.log(`Servidor corriendo en el puerto: ${PUERTO} - http://localhost:${PUERTO}`));
+app.listen(PUERTO, () =>
+  console.log(
+    `Servidor corriendo en el puerto: ${PUERTO} - http://localhost:${PUERTO}`
+  )
+);
