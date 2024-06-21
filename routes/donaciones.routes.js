@@ -13,6 +13,7 @@ const donaControllers = require("../controllers/dona.controllers");
 /*
     buscarTodos,
     ordenarMayor,
+    registrarDonacion,
 */
 
 //Creamos los endpoint para el manejo de solicitudes HTTP:
@@ -22,5 +23,7 @@ const donaControllers = require("../controllers/dona.controllers");
 donacionesRouter.get("/", donaControllers.buscarTodos);
 
 donacionesRouter.get("/:montoDonacion", donaControllers.ordenarMayor);
+
+donacionesRouter.post("/", donaControllers.registrarDonacion);
 
 module.exports = donacionesRouter;
