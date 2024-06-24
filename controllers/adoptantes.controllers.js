@@ -32,18 +32,41 @@ const buscarPorIdAdoptantes = (req, res) => {
 
 const agregarAdoptante = (req, res) => {
     const { nombre_apellido, telefono, email, dni, vivienda, ID_perrito } = req.body;
-
-    const sql = 'INSERT INTO adoptantes (nombre_apellido, telefono, email, dni, vivienda, ID_perrito) VALUES (?, ?, ?, ?, ?, ?)'
+    console.log('Datos recibidos:', req.body);
+    const sql = 'INSERT INTO adoptantes (nombre_apellido, telefono, email, dni, vivienda, ID_perrito) VALUES (?, ?, ?, ?, ?, ?)';
     
     bd.query(sql, [nombre_apellido, telefono, email, dni, vivienda, ID_perrito], (err, result) => {
         if(err) {
             console.log('Error de conexión con la base de datos', err);
             return res.status(500).json({ error: 'Error interno del servidor, no se pudo establecer conexión con la base de datos' });
         } 
-        const adoptante = { adoptanteId: result.insertId, ...req.body }
-        res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente',  adoptante});
+        const nuevoAdoptante = { adoptanteId: result.insertId, ...req.body }
+        res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente',  nuevoAdoptante});
     });
 };
+
+
+const borrarPorId = (req, res) => {
+    const  { id } = req.params;
+    const sqlBuscarId = 'SELECT * FROM perritos WHERE id = ?';
+    const sqlBorrar = 'DELETE FROM perritos WHERE id = ?';
+
+    bd.query(sqlBuscarId, [id], (err, result) => {
+        if(err) {
+            console.error('Error al intentar borrar el recurso', err);
+            return res.status(500).json({ error: 'Error interno del servidor. Intente más tarde' });
+        };
+        if (result.length === 0) {
+            console.error('Recurso no encontrado');
+            return res.status(404).json({ error: 'Recurso no encontrado' });
+        };
+        bd.query(sqlBorrar, [id], (err, result) => {
+            res.json({ msg: 'El recurso fue eliminado exitosamente' });
+        });
+    });
+};
+
+///////////////////////////////////
 
 const borrarPorIdAdoptante = (req, res) => {
     const  { id } = req.params;
