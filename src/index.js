@@ -6,6 +6,7 @@ const app = express(); //express() es una función que devuelve un objeto. En es
 
 //Importo enrutadores creados en la carpeta routes para su montaje
 const perritosRouter = require('../routes/perritos.routes');
+const adoptantesRouter = require('../routes/adoptantes.routes');
 
 //Importo middleware multer para cargar las imagenes en el servidor
 const upload = require('../middlewares/multerconfig');
@@ -27,11 +28,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-    res.send("Realizaste una solicitud GET a la ruta raiz");
+    res.send("Realizaste una solicitud GET a la ruta raíz");
 });
 
 /*Montaje de enrutador. Cualquier solicitud que coincida con estas rutas será manejada por este enrutador*/
 app.use('/perritos', upload.single('url_img'), perritosRouter);
-
+app.use('/adoptantes', adoptantesRouter);
 //agrego escuchador al servidor en el puerto especificado
 app.listen(PUERTO, () => console.log(`Servidor corriendo en el puerto: ${PUERTO} - http://localhost:${PUERTO}`));
