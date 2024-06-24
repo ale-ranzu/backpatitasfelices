@@ -5,7 +5,7 @@ const mysql = require('mysql2');
 const connection = mysql.createConnection({
     host:"localhost",
     user:"root", // Usuario de MySQL (por defecto 'root' en Laragon)
-    password:"patitasfelices", // Contraseña de MySQL (por defecto vacía en Laragon)
+    password:"", // Contraseña de MySQL (por defecto vacía en Laragon)
     database:"patitas_felices_bd", // Nombre de la base de datos
 });
 

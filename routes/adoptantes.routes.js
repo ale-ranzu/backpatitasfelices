@@ -21,12 +21,14 @@ const adoptantesControllers = require('../controllers/adoptantes.controllers');
 
 //En cada solicitud se pasa la referencia a las funciones controlodaras,  La ejecución se realiza automáticamente por Express cuando una solicitud coincide con la ruta definida. 
 
-adoptantesRouter.get("/", adoptantesControllers.buscarTodosA);
+adoptantesRouter.get("/", adoptantesControllers.buscarTodosAdoptantes);
 
-adoptantesRouter.get("/:id", adoptantesControllers.buscarPorIdA);
-
-adoptantesRouter.get("/:ID_perrito", adoptantesControllers.buscarPorIdPerrito);
+adoptantesRouter.get("/:id", adoptantesControllers.buscarPorIdAdoptantes);
 
 adoptantesRouter.post("/", adoptantesControllers.agregarAdoptante);
+
+adoptantesRouter.put("/:id", adoptantesControllers.actualizarAdoptante);
+
+adoptantesRouter.delete("/:id", adoptantesControllers.borrarPorIdAdoptante);
 
 module.exports = adoptantesRouter;
