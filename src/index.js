@@ -31,8 +31,7 @@ app.get("/", (req, res) => {
     res.send("Realizaste una solicitud GET a la ruta raíz");
 });
 
-app.post("/", (req, res) => {
-    console.log(req.body)
+app.post("/", (req, res) => {  
     res.send("Realizaste una solicitud POST a la ruta raíz");
 });
 

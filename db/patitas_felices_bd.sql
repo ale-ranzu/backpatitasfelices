@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 18, 2024 at 12:31 PM
+-- Generation Time: Jun 24, 2024 at 11:45 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `adoptantes` (
-  `id` int NOT NULL,
+  `id` int UNSIGNED NOT NULL,
   `nombre_apellido` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `telefono` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
@@ -49,35 +49,6 @@ INSERT INTO `adoptantes` (`id`, `nombre_apellido`, `telefono`, `email`, `dni`, `
 (5, 'Sebastián Yatra', '35496874122', 'syatra@email.com', '39.758.026', 'casa', 1),
 (6, 'Mirtha Legrand', '45678912', 'mirtha@email.com', '1.589.364', 'casa', 3);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `perritos`
---
-
-CREATE TABLE `perritos` (
-  `id` int UNSIGNED NOT NULL,
-  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `genero` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `edad` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `condicion_medica` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `tamaño` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `estado_adopcion` tinyint(1) NOT NULL,
-  `url_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `fecha_ingreso` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='esta tabla contiene perritos adoptados y no adoptados';
-
---
--- Dumping data for table `perritos`
---
-
-INSERT INTO `perritos` (`id`, `nombre`, `genero`, `edad`, `condicion_medica`, `tamaño`, `estado_adopcion`, `url_img`, `fecha_ingreso`) VALUES
-(1, 'Firulais', 'macho', '5 meses', 'desparacitado', 'mediano', 0, '', '2024-06-14 19:57:47'),
-(2, 'Cuqui', 'macho', '5 meses', 'desparacitado', 'mediano', 0, NULL, '2024-06-14 20:58:00'),
-(3, 'Uma', 'hembra', '10 años', 'vacunada', 'pequeño', 0, NULL, '2024-06-14 21:00:56'),
-(4, 'Uma', 'hembra', '10 años', 'vacunada', 'pequeño', 0, NULL, '2024-06-14 21:02:49'),
-(5, 'Luz', 'hembra', '7 años', 'vacunada', 'pequeño', 0, NULL, '2024-06-14 21:03:09');
-
 --
 -- Indexes for dumped tables
 --
@@ -90,20 +61,14 @@ ALTER TABLE `adoptantes`
   ADD KEY `id_perrito` (`ID_perrito`);
 
 --
--- Indexes for table `perritos`
---
-ALTER TABLE `perritos`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `perritos`
+-- AUTO_INCREMENT for table `adoptantes`
 --
-ALTER TABLE `perritos`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `adoptantes`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

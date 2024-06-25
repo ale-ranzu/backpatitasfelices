@@ -46,28 +46,6 @@ const agregarAdoptante = (req, res) => {
 };
 
 
-const borrarPorId = (req, res) => {
-    const  { id } = req.params;
-    const sqlBuscarId = 'SELECT * FROM perritos WHERE id = ?';
-    const sqlBorrar = 'DELETE FROM perritos WHERE id = ?';
-
-    bd.query(sqlBuscarId, [id], (err, result) => {
-        if(err) {
-            console.error('Error al intentar borrar el recurso', err);
-            return res.status(500).json({ error: 'Error interno del servidor. Intente más tarde' });
-        };
-        if (result.length === 0) {
-            console.error('Recurso no encontrado');
-            return res.status(404).json({ error: 'Recurso no encontrado' });
-        };
-        bd.query(sqlBorrar, [id], (err, result) => {
-            res.json({ msg: 'El recurso fue eliminado exitosamente' });
-        });
-    });
-};
-
-///////////////////////////////////
-
 const borrarPorIdAdoptante = (req, res) => {
     const  { id } = req.params;
     const sqlBuscarIdAdoptante = 'SELECT * FROM adoptantes WHERE id = ?';
@@ -107,15 +85,14 @@ const actualizarAdoptante = (req, res) => {
         const adoptanteOld = result[0];
 
         //Creo el array de nuevos valores       
-        const valores = [
-            id,
+        const valores = [            
             nombre_apellido ?? adoptanteOld.nombre_apellido,
             telefono ?? adoptanteOld.telefono,
             email ?? adoptanteOld.email,
             dni ?? adoptanteOld.dni,
             vivienda ?? adoptanteOld.vivienda,
-            ID_perrito ?? adoptanteOld.ID_perrito
-            
+            ID_perrito ?? adoptanteOld.ID_perrito,
+            id
         ];
 
         //Actualizacion:
