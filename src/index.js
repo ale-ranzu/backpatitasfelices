@@ -1,5 +1,5 @@
 //Importo express
-const express = require('express');
+const express = require("express");
 
 //Se intancia la aplicación express en app:
 const app = express(); //express() es una función que devuelve un objeto. En este caso, express() devuelve un objeto que representa una aplicación Express.
@@ -8,6 +8,7 @@ const app = express(); //express() es una función que devuelve un objeto. En es
 const perritosRouter = require('../routes/perritos.routes');
 const adoptantesRouter = require('../routes/adoptantes.routes');
 const relacionesRouter = require('../routes/relaciones.routes');
+const donacionesRouter = require("../routes/donaciones.routes");
 
 //Importo middleware multer para cargar las imagenes en el servidor
 const upload = require('../middlewares/multerconfig');
@@ -29,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-    res.send("Realizaste una solicitud GET a la ruta raíz");
+  res.send("Realizaste una solicitud GET a la ruta raíz");
 });
 
 app.post("/", (req, res) => {  
@@ -40,6 +41,12 @@ app.post("/", (req, res) => {
 app.use('/perritos', upload.single('url_img'), perritosRouter);
 app.use('/adoptantes', adoptantesRouter);
 app.use('/relaciones', relacionesRouter);
+app.use('/donaciones', donacionesRouter);
+
 
 //agrego escuchador al servidor en el puerto especificado
-app.listen(PUERTO, () => console.log(`Servidor corriendo en el puerto: ${PUERTO} - http://localhost:${PUERTO}`));
+app.listen(PUERTO, () =>
+  console.log(
+    `Servidor corriendo en el puerto: ${PUERTO} - http://localhost:${PUERTO}`
+  )
+);

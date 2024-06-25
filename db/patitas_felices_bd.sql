@@ -31,9 +31,9 @@ CREATE TABLE `adoptantes` (
   `id` int UNSIGNED NOT NULL,
   `nombre_apellido` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `telefono` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `dni` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `vivienda` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `vivienda` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ID_perrito` int UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Esta tabla contiene los postulantes/adoptantes que se registran desde la página web';
 
@@ -72,6 +72,29 @@ INSERT INTO `adoptantes_perritos` (`adoptante_id`, `perrito_id`) VALUES
 (3, 5);
 
 -- --------------------------------------------------------
+
+-- Table structure for table `historialdonaciones`
+--
+
+CREATE TABLE `historialdonaciones` (
+  `ID` int NOT NULL,
+  `nombre` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `fechaDonación` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `montoDonacion` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `historialdonaciones`
+--
+
+INSERT INTO `historialdonaciones` (`ID`, `nombre`, `email`, `fechaDonación`, `montoDonacion`) VALUES
+(1, 'Juan Perez', 'juanperez01@gmail.com', '2024-06-16 23:59:44', 5000),
+(2, 'María Diaz', 'mariadiaz@gmail.com', '2024-06-17 00:36:25', 10000),
+(3, 'Hector Rodriguez', 'hector07@gmail.com', '2024-06-17 00:38:51', 1850),
+(4, 'Daniela Carrizo', 'danicarrizo@gmail.com', '2024-06-20 16:51:23', 700),
+(5, 'Florencia Roca', 'flor001@gmail.com', '2024-06-20 16:52:21', 10700),
+(6, 'Susana Gimenez', 'holasusana@gmail.com', '2024-06-20 16:53:15', 500000);
 
 --
 -- Table structure for table `perritos`
@@ -119,6 +142,12 @@ ALTER TABLE `adoptantes_perritos`
   ADD KEY `perrito_id` (`perrito_id`);
 
 --
+
+-- Indexes for table `historialdonaciones`
+--
+ALTER TABLE `historialdonaciones`
+  ADD PRIMARY KEY (`ID`);
+
 -- Indexes for table `perritos`
 --
 ALTER TABLE `perritos`
@@ -135,6 +164,10 @@ ALTER TABLE `adoptantes`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+
+ALTER TABLE `historialdonaciones`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  
 -- AUTO_INCREMENT for table `perritos`
 --
 ALTER TABLE `perritos`
