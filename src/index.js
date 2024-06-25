@@ -7,6 +7,7 @@ const app = express(); //express() es una función que devuelve un objeto. En es
 //Importo enrutadores creados en la carpeta routes para su montaje
 const perritosRouter = require('../routes/perritos.routes');
 const adoptantesRouter = require('../routes/adoptantes.routes');
+const relacionesRouter = require('../routes/relaciones.routes');
 
 //Importo middleware multer para cargar las imagenes en el servidor
 const upload = require('../middlewares/multerconfig');
@@ -38,5 +39,7 @@ app.post("/", (req, res) => {
 /*Montaje de enrutador. Cualquier solicitud que coincida con estas rutas será manejada por este enrutador*/
 app.use('/perritos', upload.single('url_img'), perritosRouter);
 app.use('/adoptantes', adoptantesRouter);
+app.use('/relaciones', relacionesRouter);
+
 //agrego escuchador al servidor en el puerto especificado
 app.listen(PUERTO, () => console.log(`Servidor corriendo en el puerto: ${PUERTO} - http://localhost:${PUERTO}`));
