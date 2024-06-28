@@ -4,10 +4,10 @@ const mysql = require("mysql2");
 require('dotenv').config();
 
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER, // Usuario de MySQL (por defecto 'root' en Laragon)
-  password: process.env.DB_PASSWORD, // Contraseña de MySQL (por defecto vacía en Laragon)
-  database: process.env.DB_NAME, // Nombre de la base de datos
+  host: "localhost",
+  user: "root", // Usuario de MySQL (por defecto 'root' en Laragon)
+  password: "", // Contraseña de MySQL (por defecto vacía en Laragon)
+  database: "patitas_felices_bd", // Nombre de la base de datos
 });
 
 // Conectar a la base de datos

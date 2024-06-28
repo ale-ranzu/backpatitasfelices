@@ -1,14 +1,8 @@
 //Importo express
 const express = require("express");
 
-//Importación de dotenv para utilizar variables de entorno
-const dotenv = require('dotenv');
-
 //Se intancia la aplicación express en app:
 const app = express(); //express() es una función que devuelve un objeto. En este caso, express() devuelve un objeto que representa una aplicación Express.
-
-//Inicialización de dotenv
-dotenv.config();
 
 //Importo enrutadores creados en la carpeta routes para su montaje
 const perritosRouter = require('../routes/perritos.routes');
