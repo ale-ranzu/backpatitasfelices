@@ -34,9 +34,9 @@ const buscarPorId = (req, res) => {
 };
 
 const agregarPerrito = (req, res) => {
-    const { nombre, genero, edad, condicion_medica, tamano } = req.body;
+    const { nombre, genero, edad, condicion_medica, tamano, estado_adopcion } = req.body;
     console.log('Datos recibidos:', req.body); // Agrega esta línea para depuración
-    const sql = 'INSERT INTO perritos (nombre, genero, edad, condicion_medica, tamaño, url_img, fecha_ingreso) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO perritos (nombre, genero, edad, condicion_medica, tamano, estado_adopcion,  url_img, fecha_ingreso) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     /*
     si public es la raíz de tus archivos estáticos y tienes una imagen guardada en public/img_perritos/perro.jpg, la URL accesible para esa imagen sería /img_perritos/perro.jpg.
 
@@ -60,7 +60,7 @@ const agregarPerrito = (req, res) => {
     const mes = fechaActual.getMonth();
     const dia = fechaActual.getDate();
     const fecha_ingreso = `${año}-${mes}-${dia}`;
-    bd.query(sql, [nombre, genero, edad, condicion_medica, tamano, url_img, fecha_ingreso ], (err, result) => {
+    bd.query(sql, [nombre, genero, edad, condicion_medica, tamano, estado_adopcion, url_img, fecha_ingreso ], (err, result) => {
         if(err) {
             console.error('Error al intentar agregar un nuevo perrito:', err);
             return res.status(500).json({ error: 'Error interno del servidor, intente más tarde' });
@@ -70,7 +70,7 @@ const agregarPerrito = (req, res) => {
     });
 };
 
-const borrarPorId = (req, res) => {
+const borrarPorId = (req, res) => { //! Agregar el borrado de la imagen asociada al perrito eliminado
     const  { id } = req.params;
     const sqlBuscarId = 'SELECT * FROM perritos WHERE id = ?';
     const sqlBorrar = 'DELETE FROM perritos WHERE id = ?';
@@ -85,17 +85,18 @@ const borrarPorId = (req, res) => {
             return res.status(404).json({ error: 'Recurso no encontrado' });
         };
         bd.query(sqlBorrar, [id], (err, result) => {
-            res.json({ msg: 'El recurso fue eliminado exitosamente' });
+            res.status(200).json({ msg: 'El recurso fue eliminado exitosamente' });
         });
     });
 };
 
 const actualizar = (req, res) => {
     const { id } = req.params; 
-    const { nombre, genero, edad, condicion_medica, tamaño, estado_adopcion } = req.body;
+    const url_img = req.file ? req.file.path.replace('public', '') : null;
+    const { nombre, genero, edad, condicion_medica, tamano, estado_adopcion } = req.body;
 
     const sqlBuscarPorId = 'SELECT * FROM perritos WHERE id = ?';
-    const sqlModificar = 'UPDATE perritos SET nombre = ?, genero = ?, edad = ?, condicion_medica= ?, tamaño = ?, estado_adopcion = ?, url_img = ? WHERE id = ?';
+    const sqlModificar = 'UPDATE perritos SET nombre = ?, genero = ?, edad = ?, condicion_medica= ?, tamano = ?, estado_adopcion = ?, url_img = ? WHERE id = ?';
 
     //Busco el perrito y obtengo su valor anterior
     bd.query(sqlBuscarPorId, [id], (err, result) => {
@@ -110,17 +111,20 @@ const actualizar = (req, res) => {
         const perritoAnterior = result[0];
 
         //Creo el array de nuevos valores
-        /* Usar el operador || podría ser problemático cuando un campo puede tomar valores específicos como 0 (falso) o valores que se consideran falsy (como una cadena vacía ""). Cuando estado_adopcion es un valor booleano, 0 podría ser considerado como "no proporcionado" por el operador ||. Se usa //? el operador de coalescencia nula ??, que solo considerará null o undefined como "no proporcionados", permitiendo así que 0 (falso) sea considerado como un valor válido y actualizado.*/
+        
         const valores = [
-            nombre ?? perritoAnterior.nombre,
-            genero ?? perritoAnterior.genero,
-            edad ?? perritoAnterior.edad,
-            condicion_medica ?? perritoAnterior.condicion_medica,
-            tamaño ?? perritoAnterior.tamaño,
-            estado_adopcion ?? perritoAnterior.estado_adopcion,
-            url_img ?? perritoAnterior.url_img,
+            nombre || perritoAnterior.nombre,
+            genero || perritoAnterior.genero,
+            edad || perritoAnterior.edad,
+            condicion_medica || perritoAnterior.condicion_medica,
+            tamano || perritoAnterior.tamano,
+            estado_adopcion || perritoAnterior.estado_adopcion,
+            url_img || perritoAnterior.url_img,
             id
         ];
+    
+        console.log(valores);
+
         //Actualizacion:
         bd.query(sqlModificar, valores, (err, result) => {
             if(err) {
@@ -129,13 +133,13 @@ const actualizar = (req, res) => {
             };
             const perritoActualizado = { 
                 id: perritoAnterior.id,
-                nombre: nombre ?? perritoAnterior.nombre,
-                genero: genero ?? perritoAnterior.genero,
-                edad: edad ?? perritoAnterior.edad,
-                condicion_medica: condicion_medica ?? perritoAnterior.condicion_medica,
-                tamaño: tamaño ?? perritoAnterior.tamaño,
-                estado_adopcion: estado_adopcion ?? perritoAnterior.estado_adopcion,
-                url_img: url_img ?? perritoAnterior.url_img,
+                nombre: nombre || perritoAnterior.nombre,
+                genero: genero || perritoAnterior.genero,
+                edad: edad || perritoAnterior.edad,
+                condicion_medica: condicion_medica || perritoAnterior.condicion_medica,
+                tamano: tamano || perritoAnterior.tamano,
+                estado_adopcion: estado_adopcion || perritoAnterior.estado_adopcion,
+                url_img: url_img || perritoAnterior.url_img,
             };
 
             res.json({ msg: 'Perrito actualizado con éxito', perritoActualizado });
@@ -178,7 +182,7 @@ const filtrarPorNombre = (req, res) => {
 const filtrarPorTamaño = (req, res) => {
     const { tamano } = req.params;
 
-    const sql = 'SELECT * FROM perritos WHERE tamaño = ?';
+    const sql = 'SELECT * FROM perritos WHERE tamano = ?';
     
     bd.query(sql, [tamano], (err, result) => {
         if (err) {

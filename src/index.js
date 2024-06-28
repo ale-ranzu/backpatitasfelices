@@ -4,6 +4,8 @@ const express = require("express");
 //Se intancia la aplicación express en app:
 const app = express(); //express() es una función que devuelve un objeto. En este caso, express() devuelve un objeto que representa una aplicación Express.
 
+const cors = require('cors');
+
 //Importo enrutadores creados en la carpeta routes para su montaje
 const perritosRouter = require('../routes/perritos.routes');
 const adoptantesRouter = require('../routes/adoptantes.routes');
@@ -28,6 +30,14 @@ Por ejemplo, si tienes un archivo HTML llamado index.html en el directorio publi
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//Configuracion de cors para recibir solis desde el dominio http://127.0.0.1:5501
+
+app.use(cors({
+  origin: 'http://127.0.0.1:5501',  
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true // Permitir el intercambio de credenciales (cookies, tokens)
+}));
 
 app.get("/", (req, res) => {
   res.send("Realizaste una solicitud GET a la ruta raíz");
