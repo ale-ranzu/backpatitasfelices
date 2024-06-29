@@ -154,4 +154,5 @@ module.exports = {
     actualizarAdoptante,
     borrarPorIdAdoptante,
     filtrarPorIDperrito,
+    filtrarPorVivienda,
 }
