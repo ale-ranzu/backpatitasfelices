@@ -23,6 +23,8 @@ const perritosControllers = require('../controllers/perritos.controllers');
 
 perritosRouter.get("/", perritosControllers.buscarTodos);
 
+perritosRouter.get("/libre-en-proceso", perritosControllers.buscarLibreEnProceso);
+
 perritosRouter.get("/:id", perritosControllers.buscarPorId);
 
 perritosRouter.get("/filtrarporestado/:estadoAdopcion", perritosControllers.filtrarEstadoAdopcion);

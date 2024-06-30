@@ -15,6 +15,17 @@ const buscarTodos = (req, res) => {
     });
 };
 
+const buscarLibreEnProceso = (req, res) => {
+    const sql = 'SELECT * FROM perritos WHERE estado_adopcion IN ("libre", "en proceso")';
+    bd.query(sql, (err, result) => {
+        if(err) {
+            console.error('Error al buscar todos los perritos en la base de datos:', err);
+            return res.status(500).json({ error: 'Error interno del servidor, intente más tarde.' });
+        }; 
+        res.json(result);
+    });
+};
+
 
 const buscarPorId = (req, res) => {
     const { id } = req.params;
@@ -162,6 +173,7 @@ const filtrarEstadoAdopcion = (req, res) => {
     });
 };
 
+
 const filtrarPorTamaño = (req, res) => {
     let { tamano } = req.params;
 
@@ -179,7 +191,10 @@ const filtrarPorTamaño = (req, res) => {
         } 
         res.json(result);
     });
+
 };
+
+
 
 //Buscar en tabla postulaciones los id de postulantes para un perrito. Controlador para tabla postulaciones.
 const obtenerPostulantes = (req, res) => {
@@ -211,6 +226,7 @@ const obtenerPostulantes = (req, res) => {
 
 module.exports = {
     buscarTodos,
+    buscarLibreEnProceso,
     buscarPorId,
     agregarPerrito,
     actualizar,
