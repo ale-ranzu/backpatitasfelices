@@ -147,7 +147,6 @@ const actualizar = (req, res) => {
     });
 };
 
-
 const filtrarEstadoAdopcion = (req, res) => {
     const { estadoAdopcion } = req.params;
 
@@ -163,24 +162,12 @@ const filtrarEstadoAdopcion = (req, res) => {
     });
 };
 
-
-const filtrarPorNombre = (req, res) => {
-    const { nombre } = req.params;
-
-    const sql = 'SELECT * FROM perritos WHERE nombre = ?';
-    
-    bd.query(sql, [nombre], (err, result) => {
-        if (err) {
-            console.log('Error al filtrar por nombre', err);
-            res.status(500).json({ error: 'Error interno del servidor, intente mas tarde' });
-            return
-        } 
-        res.json(result);
-    });
-};
-
 const filtrarPorTamaño = (req, res) => {
-    const { tamano } = req.params;
+    let { tamano } = req.params;
+
+    if(tamano === 'pequeno') {
+        tamano = 'pequeño';
+    }
 
     const sql = 'SELECT * FROM perritos WHERE tamano = ?';
     
@@ -229,6 +216,5 @@ module.exports = {
     actualizar,
     borrarPorId,
     filtrarEstadoAdopcion,
-    filtrarPorNombre,
     filtrarPorTamaño
 }

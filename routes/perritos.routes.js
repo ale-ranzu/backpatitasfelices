@@ -27,10 +27,7 @@ perritosRouter.get("/:id", perritosControllers.buscarPorId);
 
 perritosRouter.get("/filtrarporestado/:estadoAdopcion", perritosControllers.filtrarEstadoAdopcion);
 
-perritosRouter.get("/filtrarpornombre/:nombre", perritosControllers.filtrarPorNombre);
-
 perritosRouter.get("/filtrarportamano/:tamano", perritosControllers.filtrarPorTamaño);
-
 
 /* perritosRouter.get("/obtenerpostulantes", perritosControllers.obtenerPostulantes); */
 
