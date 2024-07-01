@@ -3,6 +3,10 @@
 
 const bd = require('../db/db');
 
+const path = require('path'); 
+
+const fs = require('fs');
+
 const buscarTodos = (req, res) => {
     const sql = 'SELECT * FROM perritos';
     
@@ -81,7 +85,7 @@ const agregarPerrito = (req, res) => {
     });
 };
 
-const borrarPorId = (req, res) => { //! Agregar el borrado de la imagen asociada al perrito eliminado
+const borrarPorId = (req, res) => { 
     const  { id } = req.params;
     const sqlBuscarId = 'SELECT * FROM perritos WHERE id = ?';
     const sqlBorrar = 'DELETE FROM perritos WHERE id = ?';
@@ -95,8 +99,19 @@ const borrarPorId = (req, res) => { //! Agregar el borrado de la imagen asociada
             console.error('Recurso no encontrado');
             return res.status(404).json({ error: 'Recurso no encontrado' });
         };
+        const perritoABorrar = result[0];
         bd.query(sqlBorrar, [id], (err, result) => {
             res.status(200).json({ msg: 'El recurso fue eliminado exitosamente' });
+        });
+
+        const imgABorrarRuta = perritoABorrar.url_img.replace(/\\/g, '/');
+        const imgABorrar = path.join(__dirname, '..', 'public', imgABorrarRuta);
+        fs.unlink(imgABorrar, (err) => {
+            if (err) {
+                console.error('Error al eliminar la imagen:', err);
+            } else {
+                console.log('Imagen eliminada:', imgABorrar);
+            };
         });
     });
 };

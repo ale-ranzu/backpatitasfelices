@@ -69,6 +69,7 @@ const borrarPorIdAdoptante = (req, res) => {
 const actualizarAdoptante = (req, res) => {
     const { id } = req.params; 
     const { nombre_apellido, telefono, email, dni, vivienda, ID_perrito } = req.body;
+    console.log(req.body); /* No se esta recibiendo nada en el body */
 
     const sqlBuscarPorIdAdoptante = 'SELECT * FROM adoptantes WHERE id = ?';
     const sqlModificarAdoptante = 'UPDATE adoptantes SET nombre_apellido = ?, telefono = ?, email = ?, dni = ?, vivienda = ?, ID_perrito = ? WHERE id = ?';
@@ -86,12 +87,12 @@ const actualizarAdoptante = (req, res) => {
 
         //Creo el array de nuevos valores       
         const valores = [            
-            nombre_apellido ?? adoptanteOld.nombre_apellido,
-            telefono ?? adoptanteOld.telefono,
-            email ?? adoptanteOld.email,
-            dni ?? adoptanteOld.dni,
-            vivienda ?? adoptanteOld.vivienda,
-            ID_perrito ?? adoptanteOld.ID_perrito,
+            nombre_apellido || adoptanteOld.nombre_apellido,
+            telefono || adoptanteOld.telefono,
+            email || adoptanteOld.email,
+            dni || adoptanteOld.dni,
+            vivienda || adoptanteOld.vivienda,
+            ID_perrito || adoptanteOld.ID_perrito,
             id
         ];
 
@@ -103,13 +104,14 @@ const actualizarAdoptante = (req, res) => {
             };
             const adoptanteActual = { 
                 id: adoptanteOld.id,
-                nombre_apellido: nombre_apellido ?? adoptanteOld.nombre_apellido,
-                telefono: telefono ?? adoptanteOld.telefono,
-                email: email ?? adoptanteOld.email,
-                dni: dni ?? adoptanteOld.dni,
-                vivienda: vivienda ?? adoptanteOld.vivienda,
-                ID_perrito: ID_perrito ?? adoptanteOld.ID_perrito,
+                nombre_apellido: nombre_apellido || adoptanteOld.nombre_apellido,
+                telefono: telefono || adoptanteOld.telefono,
+                email: email || adoptanteOld.email,
+                dni: dni || adoptanteOld.dni,
+                vivienda: vivienda || adoptanteOld.vivienda,
+                ID_perrito: ID_perrito || adoptanteOld.ID_perrito,
             };
+            console.log(adoptanteActual);
 
             res.json({ msg: 'Se actualizaron los datos de la persona adoptante', adoptanteActual });
         });
