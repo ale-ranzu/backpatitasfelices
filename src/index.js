@@ -51,7 +51,7 @@ app.post("/", (req, res) => {
 app.use('/perritos', upload.single('url_img'), perritosRouter);
 app.use('/adoptantes', adoptantesRouter);
 app.use('/relaciones', relacionesRouter);
-app.use('/donaciones', donacionesRouter);
+app.use('/donaciones', upload.none(), donacionesRouter);
 
 
 //agrego escuchador al servidor en el puerto especificado
