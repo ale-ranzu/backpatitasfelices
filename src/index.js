@@ -49,7 +49,7 @@ app.post("/", (req, res) => {
 
 /*Montaje de enrutador. Cualquier solicitud que coincida con estas rutas será manejada por este enrutador*/
 app.use('/perritos', upload.single('url_img'), perritosRouter);
-app.use('/adoptantes', adoptantesRouter);
+app.use('/adoptantes', upload.none(), adoptantesRouter);
 app.use('/relaciones', relacionesRouter);
 app.use('/donaciones', donacionesRouter);
 
