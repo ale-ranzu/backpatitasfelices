@@ -116,14 +116,15 @@ const actualizarAdoptante = (req, res) => {
     });
 };
 
-const filtrarPorIDperrito  = (req, res) => {
+
+const filtrarPorNombre = (req, res) => {
     const { nombre } = req.params;
 
-    const sql = 'SELECT * FROM adoptantes WHERE ID_perrito = ?';
+    const sql = 'SELECT * FROM adoptantes WHERE nombre_apellido = ?';
     
     bd.query(sql, [nombre], (err, result) => {
         if (err) {
-            console.log('Error al filtrar el ID del perrito', err);
+            console.log('Error al filtrar por nombre', err);
             res.status(500).json({ error: 'Error interno del servidor, intente mas tarde' });
             return
         } 
@@ -131,21 +132,20 @@ const filtrarPorIDperrito  = (req, res) => {
     });
 };
 
-const filtrarPorVivienda  = (req, res) => {
-    const { nombre } = req.params;
+const filtrarPorVivienda = (req, res) => {
+    const { vivienda } = req.params;
 
     const sql = 'SELECT * FROM adoptantes WHERE vivienda = ?';
     
-    bd.query(sql, [nombre], (err, result) => {
+    bd.query(sql, [vivienda], (err, result) => {
         if (err) {
-            console.log('Error al filtrar la vivienda', err);
+            console.log('Error al filtrar por tipo de vivienda', err);
             res.status(500).json({ error: 'Error interno del servidor, intente mas tarde' });
             return
         } 
         res.json(result);
     });
 };
-
 
 module.exports = {
     buscarTodosAdoptantes,
@@ -153,6 +153,6 @@ module.exports = {
     agregarAdoptante,
     actualizarAdoptante,
     borrarPorIdAdoptante,
-    filtrarPorIDperrito,
+    filtrarPorNombre,
     filtrarPorVivienda,
 }

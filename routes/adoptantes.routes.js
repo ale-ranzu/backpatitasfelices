@@ -8,15 +8,6 @@ const adoptantesRouter = Router();
 
 const adoptantesControllers = require('../controllers/adoptantes.controllers');
 
-/*
-    buscarTodos,
-    agregar,
-    buscarPorId,
-    actualizar,
-    borrar,
-    buscarPorIDPerrito
-*/
-
 //Creo los endpoint para el manejo de solicitudes HTTP:
 
 //En cada solicitud se pasa la referencia a las funciones controlodaras,  La ejecución se realiza automáticamente por Express cuando una solicitud coincide con la ruta definida. 
@@ -30,5 +21,9 @@ adoptantesRouter.post("/", adoptantesControllers.agregarAdoptante);
 adoptantesRouter.put("/:id", adoptantesControllers.actualizarAdoptante);
 
 adoptantesRouter.delete("/:id", adoptantesControllers.borrarPorIdAdoptante);
+
+adoptantesRouter.get("/filtrarpornombre/:nombre_apellido", adoptantesControllers.filtrarPorNombre);
+
+adoptantesRouter.get("/filtrarporvivienda/:vivienda", adoptantesControllers.filtrarPorVivienda);
 
 module.exports = adoptantesRouter;
