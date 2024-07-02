@@ -209,7 +209,37 @@ const filtrarPorTamaño = (req, res) => {
 
 };
 
+//!Este controlador se utiliza en el sitio si un perrito quiere ser adoptado
+const cambiarEstadoAdopcion = (req, res) => {
+    const { id } = req.params;
+    const { estado_adopcion } = req.body;
+    console.log(estado_adopcion)
 
+    sql = 'UPDATE perritos SET estado_adopcion = ? WHERE id = ?';
+
+    bd.query(sql, [estado_adopcion, id], (err, result) => {
+        if (err) {
+            console.log('Error al cambiar estado de adopcion', err);
+            res.status(500).json({ error: 'Error interno del servidor, intente mas tarde' });
+            return
+        } 
+        res.status(201).json({ msg: `Se modifico el estado de adopcion del perrito a ${estado_adopcion}` });
+    });
+};
+
+/* const cambiarEstadoAdopcionAdoptado = (req, res) => {
+    const { id } = req.params;
+    sql = 'UPDATE perritos set estado_adopcion = ? WHERE id = ?';
+
+    bd.query(sql, ['adoptado', id], (err, result) => {
+        if (err) {
+            console.log('Error al cambiar estado de adopcion', err);
+            res.status(500).json({ error: 'Error interno del servidor, intente mas tarde' });
+            return
+        } 
+        res.status(201).json({ msg: 'Se modifico el estado del perrito a "adoptado"' });
+    });
+}; */
 
 //Buscar en tabla postulaciones los id de postulantes para un perrito. Controlador para tabla postulaciones.
 const obtenerPostulantes = (req, res) => {
@@ -246,6 +276,7 @@ module.exports = {
     agregarPerrito,
     actualizar,
     borrarPorId,
+    cambiarEstadoAdopcion,
     filtrarEstadoAdopcion,
     filtrarPorTamaño
 }

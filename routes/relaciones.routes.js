@@ -4,7 +4,9 @@ const relacionesRouter = Router();
 
 const relacionesControllers = require('../controllers/relaciones.controllers');
 
-relacionesRouter.get("/asociar", relacionesControllers.asociarAdoptantePerrito);
+relacionesRouter.get("/", relacionesControllers.solicitarPostulaciones);
+
+/* relacionesRouter.get("/asociar", relacionesControllers.asociarAdoptantePerrito); */
 
 relacionesRouter.get("/adoptantes/:id/perritos", relacionesControllers.obtenerPerritosPorAdoptante);
 

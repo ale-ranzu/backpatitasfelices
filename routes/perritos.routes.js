@@ -37,6 +37,8 @@ perritosRouter.post("/", perritosControllers.agregarPerrito);
 
 perritosRouter.put("/:id", perritosControllers.actualizar);
 
+perritosRouter.put("/cambiarestado/:id", perritosControllers.cambiarEstadoAdopcion);
+
 perritosRouter.delete("/:id", perritosControllers.borrarPorId);
 
 

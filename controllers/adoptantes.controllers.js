@@ -31,20 +31,27 @@ const buscarPorIdAdoptantes = (req, res) => {
 
 
 const agregarAdoptante = (req, res) => {
-    const { nombre_apellido, telefono, email, dni, vivienda, ID_perrito } = req.body;
+    const { nombre_apellido, telefono, email, dni, vivienda, ID_perrito } = req.body; //!Recibe ID_perritos
     console.log('Datos recibidos:', req.body);
-    const sql = 'INSERT INTO adoptantes (nombre_apellido, telefono, email, dni, vivienda, ID_perrito) VALUES (?, ?, ?, ?, ?, ?)';
-    
-    bd.query(sql, [nombre_apellido, telefono, email, dni, vivienda, ID_perrito], (err, result) => {
+    const sql = 'INSERT INTO adoptantes (nombre_apellido, telefono, email, dni, vivienda) VALUES (?, ?, ?, ?, ?)'; //! Pero no lo ingresa acá
+    const sqlPostulacion = 'INSERT INTO adoptantes_perritos (id_perrito, id_adoptante) VALUES (?, ?);'
+
+    bd.query(sql, [nombre_apellido, telefono, email, dni, vivienda], (err, result) => {
         if(err) {
             console.log('Error de conexión con la base de datos', err);
-            return res.status(500).json({ error: 'Error interno del servidor, no se pudo establecer conexión con la base de datos' });
+            return res.status(500).json({ error: 'Error interno del servidor, no se pudo establecer conexión con la base de datos' }); 
         } 
-        const nuevoAdoptante = { adoptanteId: result.insertId, ...req.body }
-        res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente',  nuevoAdoptante});
+        const adoptanteId = result.insertId;
+        const nuevoAdoptante = { adoptanteId, ...req.body } 
+        bd.query(sqlPostulacion, [ID_perrito, adoptanteId], (err, resultPostulacion) => {  //! Ingresamos el ID_perrito en la tabla adoptantes_perritos, donde se registran las postulaciones 
+            if(err) {
+                console.log('Error al insertar postulante', err);
+                return res.status(500);
+            };
+            res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente',  nuevoAdoptante});
+        });
     });
 };
-
 
 const borrarPorIdAdoptante = (req, res) => {
     const  { id } = req.params;
@@ -68,12 +75,13 @@ const borrarPorIdAdoptante = (req, res) => {
 
 const actualizarAdoptante = (req, res) => {
     const { id } = req.params; 
-    const { nombre_apellido, telefono, email, dni, vivienda, ID_perrito } = req.body;
+    const { nombre_apellido, telefono, email, dni, vivienda } = req.body;
     console.log(req.body); /* No se esta recibiendo nada en el body */
 
     const sqlBuscarPorIdAdoptante = 'SELECT * FROM adoptantes WHERE id = ?';
-    const sqlModificarAdoptante = 'UPDATE adoptantes SET nombre_apellido = ?, telefono = ?, email = ?, dni = ?, vivienda = ?, ID_perrito = ? WHERE id = ?';
+    const sqlModificarAdoptante = 'UPDATE adoptantes SET nombre_apellido = ?, telefono = ?, email = ?, dni = ?, vivienda = ? WHERE id = ?';
     
+    //!Saco ID_perrito de este controlador
     bd.query(sqlBuscarPorIdAdoptante, [id], (err, result) => {
         if(err) {
             console.error('Error al buscar a la persona adoptante en la base de datos:', err);
@@ -92,7 +100,6 @@ const actualizarAdoptante = (req, res) => {
             email || adoptanteOld.email,
             dni || adoptanteOld.dni,
             vivienda || adoptanteOld.vivienda,
-            ID_perrito || adoptanteOld.ID_perrito,
             id
         ];
 
@@ -109,7 +116,6 @@ const actualizarAdoptante = (req, res) => {
                 email: email || adoptanteOld.email,
                 dni: dni || adoptanteOld.dni,
                 vivienda: vivienda || adoptanteOld.vivienda,
-                ID_perrito: ID_perrito || adoptanteOld.ID_perrito,
             };
             console.log(adoptanteActual);
 
