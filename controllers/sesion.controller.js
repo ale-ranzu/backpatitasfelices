@@ -23,25 +23,21 @@ const nuevoUsuario = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body)
     const values = [email];
     const sql = 'SELECT * FROM usuarios WHERE email = ?';
-    console.log(values);
     bd.query(sql, values, (err, result) => {
-        console.log(result);
-
         if (err) {
             console.log(err);
             return res.status(500).json({ message: 'Error al iniciar sesión' });
         }
         if (result.length === 0) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(404).json({ error: 'Usuario no encontrado' });
         }
         const usuario = result[0];
         bcrypt.compare(password, result[0].password, (err, result) => {
             if (err) {
                 console.log(err);
-                return res.status(500).json({ message: 'Error al iniciar sesión' });
+                return res.status(500).json({ error: 'Error al iniciar sesión' });
             }
             if (result) {
                 const payload = {
@@ -56,7 +52,7 @@ const login = async (req, res) => {
                     message: 'Usuario logueado', token: token
                 });
             } else {
-                return res.status(401).json({ message: 'Contraseña incorrecta' });
+                return res.status(401).json({ error: 'Contraseña incorrecta' });
             }
         });
     });

@@ -1,6 +1,10 @@
 //Importo express 
 const express = require("express");
 
+const formData = require("express-form-data");
+const os = require("os");
+
+
 //Importación de DOTENV para manejo de variables de entorno
 const dotenv = require('dotenv');
 
@@ -44,6 +48,19 @@ app.use(cors({
   credentials: true // Permitir el intercambio de credenciales (cookies, tokens)
 }));
 
+
+const options = {
+  uploadDir: os.tmpdir(),
+  autoClean: true
+};
+// parse data with connect-multiparty. 
+app.use(formData.parse(options));
+// delete from the request all empty files (size == 0)
+app.use(formData.format());
+// change the file objects to fs.ReadStream 
+app.use(formData.stream());
+// union the body and the files
+app.use(formData.union());
 
 app.get("/", (req, res) => {
   res.send("Realizaste una solicitud GET a la ruta raíz");
