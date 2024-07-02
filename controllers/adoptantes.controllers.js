@@ -43,6 +43,8 @@ const agregarAdoptante = (req, res) => {
         } 
         const adoptanteId = result.insertId;
         const nuevoAdoptante = { adoptanteId, ...req.body } 
+
+        //!Consulta para agregar postulacion
         bd.query(sqlPostulacion, [ID_perrito, adoptanteId], (err, resultPostulacion) => {  //! Ingresamos el ID_perrito en la tabla adoptantes_perritos, donde se registran las postulaciones 
             if(err) {
                 console.log('Error al insertar postulante', err);
