@@ -4,11 +4,15 @@ const relacionesRouter = Router();
 
 const relacionesControllers = require('../controllers/relaciones.controllers');
 
-relacionesRouter.get("/", relacionesControllers.solicitarPostulaciones);
+relacionesRouter.get("/postulaciones", relacionesControllers.solicitarPostulaciones);
 
-/* relacionesRouter.get("/asociar", relacionesControllers.asociarAdoptantePerrito); */
+relacionesRouter.delete("/postulaciones/:id_perrito", relacionesControllers.eliminarPostulaciones);
 
-relacionesRouter.get("/adoptantes/:id/perritos", relacionesControllers.obtenerPerritosPorAdoptante);
+relacionesRouter.get("/adopciones", relacionesControllers.solicitarAdopciones);
+
+relacionesRouter.post("/adopciones", relacionesControllers.agregarAdopcion); 
+
+/* relacionesRouter.get("/adoptantes/:id/perritos", relacionesControllers.obtenerPerritosPorAdoptante); */
 
 relacionesRouter.get("/perritos/:id/adoptantes", relacionesControllers.obtenerAdoptantesPorPerrito);
 
