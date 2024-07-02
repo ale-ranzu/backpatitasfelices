@@ -5,9 +5,9 @@ require('dotenv').config();
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
-  user: process.env.DB_USER, // Usuario de MySQL (por defecto 'root' en Laragon)
-  password: process.env.DB_PASS, // Contraseña de MySQL (por defecto vacía en Laragon)
-  database: process.env.DB_NAME, // Nombre de la base de datos
+  user: process.env.DB_USER, 
+  password: process.env.DB_PASS, 
+  database: process.env.DB_NAME, 
 });
 
 // Conectar a la base de datos
@@ -20,4 +20,4 @@ connection.connect((error) => {
 });
 
 module.exports =
-  connection; /* Esto se usa en los controladores para establecer la conexion con la base de datos */
+  connection; 

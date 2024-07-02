@@ -16,8 +16,6 @@ const app = express(); //express() es una función que devuelve un objeto. En es
 //Inicialización de dotenv
 dotenv.config();
 
-const cors = require('cors');
-
 //Importo enrutadores creados en la carpeta routes para su montaje
 const perritosRouter = require('../routes/perritos.routes');
 const adoptantesRouter = require('../routes/adoptantes.routes');
