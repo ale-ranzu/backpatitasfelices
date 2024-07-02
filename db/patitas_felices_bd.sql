@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 25, 2024 at 09:25 PM
+-- Generation Time: Jul 02, 2024 at 09:52 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -31,9 +31,9 @@ CREATE TABLE `adoptantes` (
   `id` int UNSIGNED NOT NULL,
   `nombre_apellido` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `telefono` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `dni` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `vivienda` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `vivienda` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ID_perrito` int UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Esta tabla contiene los postulantes/adoptantes que se registran desde la página web';
 
@@ -42,70 +42,11 @@ CREATE TABLE `adoptantes` (
 --
 
 INSERT INTO `adoptantes` (`id`, `nombre_apellido`, `telefono`, `email`, `dni`, `vivienda`, `ID_perrito`) VALUES
-(3, 'Angelina Jolie', '22147854569', 'angelina@email.com', '37.014.025', 'casa', 3),
-(6, 'Mirtha Legrand', '45678912', 'mirtha@email.com', '1.589.364', 'casa', 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `adoptantes_perritos`
---
-
-CREATE TABLE `adoptantes_perritos` (
-  `adoptante_id` int UNSIGNED NOT NULL,
-  `perrito_id` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `historialdonaciones`
---
-
-CREATE TABLE `historialdonaciones` (
-  `ID` int NOT NULL,
-  `nombre` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `fechaDonación` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `montoDonacion` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `historialdonaciones`
---
-
-INSERT INTO `historialdonaciones` (`ID`, `nombre`, `email`, `fechaDonación`, `montoDonacion`) VALUES
-(1, 'Juan Perez', 'juanperez01@gmail.com', '2024-06-16 23:59:44', 5000),
-(2, 'María Diaz', 'mariadiaz@gmail.com', '2024-06-17 00:36:25', 10000),
-(3, 'Hector Rodriguez', 'hector07@gmail.com', '2024-06-17 00:38:51', 1850),
-(4, 'Daniela Carrizo', 'danicarrizo@gmail.com', '2024-06-20 16:51:23', 700),
-(5, 'Florencia Roca', 'flor001@gmail.com', '2024-06-20 16:52:21', 10700),
-(6, 'Susana Gimenez', 'holasusana@gmail.com', '2024-06-20 16:53:15', 500000);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `perritos`
---
-
-CREATE TABLE `perritos` (
-  `id` int UNSIGNED NOT NULL,
-  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `genero` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `edad` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `condicion_medica` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `tamaño` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `estado_adopcion` char(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'pendiente',
-  `url_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `fecha_ingreso` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='esta tabla contiene perritos adoptados y no adoptados';
-
---
--- Dumping data for table `perritos`
---
-
-INSERT INTO `perritos` (`id`, `nombre`, `genero`, `edad`, `condicion_medica`, `tamaño`, `estado_adopcion`, `url_img`, `fecha_ingreso`) VALUES
-(3, 'Luz', 'hembra', '7', 'vacunada, desparacitada', 'pequeño', 'pendiente', '\\img_perritos\\1719005120786.jpg', '2024-05-21');
+(1, 'Marie Curie', '7485964152', 'mery@email.com', '258.369', 'departamento', 2),
+(2, 'Albert Einstein', '25874196', 'albert@email.com', '1.258.789', 'departamento', 3),
+(3, 'Mirtha Legrand', '45678912', 'mirtha@email.com', '1.589.364', 'casa', 3),
+(4, 'Lionel Messi', '8524716', 'lio@email.com', '35.896.123', 'casa', 5),
+(5, 'Sebastián Yatra', '35496874122', 'syatra@email.com', '39.758.026', 'casa', 1);
 
 --
 -- Indexes for dumped tables
@@ -119,39 +60,24 @@ ALTER TABLE `adoptantes`
   ADD KEY `id_perrito` (`ID_perrito`);
 
 --
--- Indexes for table `adoptantes_perritos`
---
-ALTER TABLE `adoptantes_perritos`
-  ADD PRIMARY KEY (`adoptante_id`,`perrito_id`),
-  ADD KEY `perrito_id` (`perrito_id`);
-
---
--- Indexes for table `historialdonaciones`
---
-ALTER TABLE `historialdonaciones`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `perritos`
---
-ALTER TABLE `perritos`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `historialdonaciones`
+-- AUTO_INCREMENT for table `adoptantes`
 --
-ALTER TABLE `historialdonaciones`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `adoptantes`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `perritos`
+-- Constraints for dumped tables
 --
-ALTER TABLE `perritos`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Constraints for table `adoptantes`
+--
+ALTER TABLE `adoptantes`
+  ADD CONSTRAINT `adoptantes_ibfk_1` FOREIGN KEY (`ID_perrito`) REFERENCES `perritos` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
