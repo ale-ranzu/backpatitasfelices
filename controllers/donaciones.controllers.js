@@ -32,6 +32,8 @@ const buscarPorId = (req, res) => {
 const registrarDonacion = (req, res) => {
   const { nombre, fechaDonacion, montoDonacion } = req.body;
 
+  clg(req.body)
+
   const sql =
     "INSERT INTO historialdonaciones (nombre, fechaDonacion, montoDonacion) VALUES (?, ?, ?)";
 

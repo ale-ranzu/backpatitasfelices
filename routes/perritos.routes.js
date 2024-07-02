@@ -23,20 +23,21 @@ const perritosControllers = require('../controllers/perritos.controllers');
 
 perritosRouter.get("/", perritosControllers.buscarTodos);
 
+perritosRouter.get("/libre-en-proceso", perritosControllers.buscarLibreEnProceso);
+
 perritosRouter.get("/:id", perritosControllers.buscarPorId);
 
 perritosRouter.get("/filtrarporestado/:estadoAdopcion", perritosControllers.filtrarEstadoAdopcion);
 
-perritosRouter.get("/filtrarpornombre/:nombre", perritosControllers.filtrarPorNombre);
-
 perritosRouter.get("/filtrarportamano/:tamano", perritosControllers.filtrarPorTamaño);
-
 
 /* perritosRouter.get("/obtenerpostulantes", perritosControllers.obtenerPostulantes); */
 
 perritosRouter.post("/", perritosControllers.agregarPerrito);
 
 perritosRouter.put("/:id", perritosControllers.actualizar);
+
+perritosRouter.put("/cambiarestado/:id", perritosControllers.cambiarEstadoAdopcion);
 
 perritosRouter.delete("/:id", perritosControllers.borrarPorId);
 

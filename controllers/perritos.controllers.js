@@ -3,9 +3,24 @@
 
 const bd = require('../db/db');
 
+const path = require('path'); 
+
+const fs = require('fs');
+
 const buscarTodos = (req, res) => {
     const sql = 'SELECT * FROM perritos';
     
+    bd.query(sql, (err, result) => {
+        if(err) {
+            console.error('Error al buscar todos los perritos en la base de datos:', err);
+            return res.status(500).json({ error: 'Error interno del servidor, intente más tarde.' });
+        }; 
+        res.json(result);
+    });
+};
+
+const buscarLibreEnProceso = (req, res) => {
+    const sql = 'SELECT * FROM perritos WHERE estado_adopcion IN ("libre", "en proceso")';
     bd.query(sql, (err, result) => {
         if(err) {
             console.error('Error al buscar todos los perritos en la base de datos:', err);
@@ -70,7 +85,7 @@ const agregarPerrito = (req, res) => {
     });
 };
 
-const borrarPorId = (req, res) => { //! Agregar el borrado de la imagen asociada al perrito eliminado
+const borrarPorId = (req, res) => { 
     const  { id } = req.params;
     const sqlBuscarId = 'SELECT * FROM perritos WHERE id = ?';
     const sqlBorrar = 'DELETE FROM perritos WHERE id = ?';
@@ -84,8 +99,19 @@ const borrarPorId = (req, res) => { //! Agregar el borrado de la imagen asociada
             console.error('Recurso no encontrado');
             return res.status(404).json({ error: 'Recurso no encontrado' });
         };
+        const perritoABorrar = result[0];
         bd.query(sqlBorrar, [id], (err, result) => {
             res.status(200).json({ msg: 'El recurso fue eliminado exitosamente' });
+        });
+
+        const imgABorrarRuta = perritoABorrar.url_img.replace(/\\/g, '/');
+        const imgABorrar = path.join(__dirname, '..', 'public', imgABorrarRuta);
+        fs.unlink(imgABorrar, (err) => {
+            if (err) {
+                console.error('Error al eliminar la imagen:', err);
+            } else {
+                console.log('Imagen eliminada:', imgABorrar);
+            };
         });
     });
 };
@@ -147,7 +173,6 @@ const actualizar = (req, res) => {
     });
 };
 
-
 const filtrarEstadoAdopcion = (req, res) => {
     const { estadoAdopcion } = req.params;
 
@@ -164,23 +189,12 @@ const filtrarEstadoAdopcion = (req, res) => {
 };
 
 
-const filtrarPorNombre = (req, res) => {
-    const { nombre } = req.params;
-
-    const sql = 'SELECT * FROM perritos WHERE nombre = ?';
-    
-    bd.query(sql, [nombre], (err, result) => {
-        if (err) {
-            console.log('Error al filtrar por nombre', err);
-            res.status(500).json({ error: 'Error interno del servidor, intente mas tarde' });
-            return
-        } 
-        res.json(result);
-    });
-};
-
 const filtrarPorTamaño = (req, res) => {
-    const { tamano } = req.params;
+    let { tamano } = req.params;
+
+    if(tamano === 'pequeno') {
+        tamano = 'pequeño';
+    }
 
     const sql = 'SELECT * FROM perritos WHERE tamano = ?';
     
@@ -192,7 +206,40 @@ const filtrarPorTamaño = (req, res) => {
         } 
         res.json(result);
     });
+
 };
+
+//!Este controlador se utiliza en el sitio si un perrito quiere ser adoptado
+const cambiarEstadoAdopcion = (req, res) => {
+    const { id } = req.params;
+    const { estado_adopcion } = req.body;
+    console.log(estado_adopcion)
+
+    sql = 'UPDATE perritos SET estado_adopcion = ? WHERE id = ?';
+
+    bd.query(sql, [estado_adopcion, id], (err, result) => {
+        if (err) {
+            console.log('Error al cambiar estado de adopcion', err);
+            res.status(500).json({ error: 'Error interno del servidor, intente mas tarde' });
+            return
+        } 
+        res.status(201).json({ msg: `Se modifico el estado de adopcion del perrito a ${estado_adopcion}` });
+    });
+};
+
+/* const cambiarEstadoAdopcionAdoptado = (req, res) => {
+    const { id } = req.params;
+    sql = 'UPDATE perritos set estado_adopcion = ? WHERE id = ?';
+
+    bd.query(sql, ['adoptado', id], (err, result) => {
+        if (err) {
+            console.log('Error al cambiar estado de adopcion', err);
+            res.status(500).json({ error: 'Error interno del servidor, intente mas tarde' });
+            return
+        } 
+        res.status(201).json({ msg: 'Se modifico el estado del perrito a "adoptado"' });
+    });
+}; */
 
 //Buscar en tabla postulaciones los id de postulantes para un perrito. Controlador para tabla postulaciones.
 const obtenerPostulantes = (req, res) => {
@@ -224,11 +271,12 @@ const obtenerPostulantes = (req, res) => {
 
 module.exports = {
     buscarTodos,
+    buscarLibreEnProceso,
     buscarPorId,
     agregarPerrito,
     actualizar,
     borrarPorId,
+    cambiarEstadoAdopcion,
     filtrarEstadoAdopcion,
-    filtrarPorNombre,
     filtrarPorTamaño
 }
