@@ -1,14 +1,21 @@
-//Importo express
+//Importo express 
 const express = require("express");
+
+//Importación de DOTENV para manejo de variables de entorno
+const dotenv = require('dotenv');
 
 //Se intancia la aplicación express en app:
 const app = express(); //express() es una función que devuelve un objeto. En este caso, express() devuelve un objeto que representa una aplicación Express.
+
+//Inicialización de dotenv
+dotenv.config();
 
 //Importo enrutadores creados en la carpeta routes para su montaje
 const perritosRouter = require('../routes/perritos.routes');
 const adoptantesRouter = require('../routes/adoptantes.routes');
 const relacionesRouter = require('../routes/relaciones.routes');
 const donacionesRouter = require("../routes/donaciones.routes");
+const sesionRouter = require('../routes/sesion.routes');
 
 //Importo middleware multer para cargar las imagenes en el servidor
 const upload = require('../middlewares/multerconfig');
@@ -42,6 +49,7 @@ app.use('/perritos', upload.single('url_img'), perritosRouter);
 app.use('/adoptantes', adoptantesRouter);
 app.use('/relaciones', relacionesRouter);
 app.use('/donaciones', donacionesRouter);
+app.use('/sesion', sesionRouter);
 
 
 //agrego escuchador al servidor en el puerto especificado

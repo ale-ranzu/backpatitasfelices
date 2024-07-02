@@ -8,6 +8,8 @@ const perritosRouter = Router();
 
 const perritosControllers = require('../controllers/perritos.controllers');
 
+const { checkToken } = require('../middlewares/checkToken');
+
 /*
     buscarTodos,
     agregar,
@@ -21,7 +23,7 @@ const perritosControllers = require('../controllers/perritos.controllers');
 
 //En cada solicitud se pasa la referencia a las funciones controlodaras, la ejecución se realiza automáticamente por Express cuando una solicitud coincide con la ruta definida. 
 
-perritosRouter.get("/", perritosControllers.buscarTodos);
+perritosRouter.get("/", checkToken, perritosControllers.buscarTodos);
 
 perritosRouter.get("/:id", perritosControllers.buscarPorId);
 
