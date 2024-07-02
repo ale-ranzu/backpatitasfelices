@@ -23,9 +23,12 @@ const nuevoUsuario = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body)
     const values = [email];
     const sql = 'SELECT * FROM usuarios WHERE email = ?';
+    console.log(values);
     bd.query(sql, values, (err, result) => {
+        console.log(result);
 
         if (err) {
             console.log(err);
@@ -52,6 +55,8 @@ const login = async (req, res) => {
                 return res.status(200).json({
                     message: 'Usuario logueado', token: token
                 });
+            } else {
+                return res.status(401).json({ message: 'Contraseña incorrecta' });
             }
         });
     });

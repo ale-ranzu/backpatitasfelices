@@ -4,6 +4,8 @@ const express = require("express");
 //Importación de DOTENV para manejo de variables de entorno
 const dotenv = require('dotenv');
 
+const cors = require('cors');
+
 //Se intancia la aplicación express en app:
 const app = express(); //express() es una función que devuelve un objeto. En este caso, express() devuelve un objeto que representa una aplicación Express.
 
@@ -35,6 +37,13 @@ Por ejemplo, si tienes un archivo HTML llamado index.html en el directorio publi
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors({
+  origin: 'http://127.0.0.1:5501',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true // Permitir el intercambio de credenciales (cookies, tokens)
+}));
+
 
 app.get("/", (req, res) => {
   res.send("Realizaste una solicitud GET a la ruta raíz");
