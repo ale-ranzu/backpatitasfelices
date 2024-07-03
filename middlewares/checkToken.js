@@ -11,7 +11,7 @@ const checkToken = (req, res, next) => {
     let payload = {};
 
     try {
-        payload = jwt.decode(userToken, process.env.JWT_SECRET);
+        payload = jwt.decode(userToken, 'secret');
     } catch (err) {
         return res.json({ error: 'Token incorrecto' });
     }
