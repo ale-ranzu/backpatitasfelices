@@ -42,12 +42,14 @@ Por ejemplo, si tienes un archivo HTML llamado index.html en el directorio publi
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+//Configuracion de cors para recibir solis desde el dominio http://127.0.0.1:5501
+
 app.use(cors({
-  origin: 'http://127.0.0.1:5501',
+  origin: 'http://127.0.0.1:5501',  
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true // Permitir el intercambio de credenciales (cookies, tokens)
 }));
-
 
 const options = {
   uploadDir: os.tmpdir(),
@@ -62,6 +64,7 @@ app.use(formData.stream());
 // union the body and the files
 app.use(formData.union());
 
+
 app.get("/", (req, res) => {
   res.send("Realizaste una solicitud GET a la ruta raíz");
 });
@@ -72,11 +75,10 @@ app.post("/", (req, res) => {
 
 /*Montaje de enrutador. Cualquier solicitud que coincida con estas rutas será manejada por este enrutador*/
 app.use('/perritos', upload.single('url_img'), perritosRouter);
-app.use('/adoptantes', adoptantesRouter);
+app.use('/adoptantes', upload.none(), adoptantesRouter);
 app.use('/relaciones', relacionesRouter);
-app.use('/donaciones', donacionesRouter);
+app.use('/donaciones', upload.none(), donacionesRouter);
 app.use('/sesion', sesionRouter);
-
 
 //agrego escuchador al servidor en el puerto especificado
 app.listen(PUERTO, () =>
