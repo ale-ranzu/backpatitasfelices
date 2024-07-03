@@ -36,7 +36,7 @@ const upload = multer({
 
     //Funcion para filtrar los archivos segun su tipo
     fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png/;
+        const filetypes = /jpeg|jpg|png|webp/;
 
         /*
         MIME Type, significa Multipurpose Internet Mail Extensions Type. Indica el tipo de contenido y formato de un archivo.Asegura que los archivos sean reconocidos y manejados correctamente, mejorando la seguridad y compatibilidad.
@@ -57,7 +57,7 @@ const upload = multer({
     },
 
     //Define un limite para el archivo como el tamaño máximo en bits
-    limits: { fileSize: 1000000 }
+    limits: { fileSize: 5000000 }
 });
 
 module.exports = upload;

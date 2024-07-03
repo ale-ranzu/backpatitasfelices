@@ -36,23 +36,58 @@ const agregarAdoptante = (req, res) => {
     const sql = 'INSERT INTO adoptantes (nombre_apellido, telefono, email, dni, vivienda) VALUES (?, ?, ?, ?, ?)'; //! Pero no lo ingresa acá
     const sqlPostulacion = 'INSERT INTO adoptantes_perritos (id_perrito, id_adoptante) VALUES (?, ?);'
 
-    bd.query(sql, [nombre_apellido, telefono, email, dni, vivienda], (err, result) => {
+    //Verifico que el dni no exista en la base de datos, si existe entonces solo se agrega la postulacion sobre la base de ese id, de lo contrario se genera un nuevo id en adoptantes, evito que se cargue el mismo dni dos veces.
+
+    const sqlBuscaDni = 'SELECT id, dni FROM adoptantes WHERE dni = ?';
+
+    bd.query(sqlBuscaDni, [dni], (err, result) => {
         if(err) {
             console.log('Error de conexión con la base de datos', err);
             return res.status(500).json({ error: 'Error interno del servidor, no se pudo establecer conexión con la base de datos' }); 
-        } 
-        const adoptanteId = result.insertId;
-        const nuevoAdoptante = { adoptanteId, ...req.body } 
+        }; 
+        if(result.length === 0) {
+            console.log('El dni ingresado no se encuentra en la base de datos');
 
-        //!Consulta para agregar postulacion
-        bd.query(sqlPostulacion, [ID_perrito, adoptanteId], (err, resultPostulacion) => {  //! Ingresamos el ID_perrito en la tabla adoptantes_perritos, donde se registran las postulaciones 
-            if(err) {
-                console.log('Error al insertar postulante', err);
-                return res.status(500);
-            };
-            res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente',  nuevoAdoptante});
-        });
-    });
+            bd.query(sql, [nombre_apellido, telefono, email, dni, vivienda], (err, resultAgregar) => {
+
+                const adoptanteId = resultAgregar.insertId;
+                const nuevoAdoptante = { adoptanteId, ...req.body };
+        
+                //!Consulta para agregar postulacion
+                bd.query(sqlPostulacion, [ID_perrito, adoptanteId], (err, resultPostulacion) => {  //! Ingresamos el ID_perrito en la tabla adoptantes_perritos, donde se registran las postulaciones 
+                    if(err) {
+                        console.log('Error al insertar postulante', err);
+                        return res.status(500);
+                    };
+                    res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente',  nuevoAdoptante});
+                });
+            });
+        } else {
+            //!Busco todas las postulaciones que tiene el adoptante y verifico que no se este postulando dos veces al mismo perrito
+            const adoptante = result[0];
+            const sqlYaSePostulo = 'SELECT id_perrito FROM adoptantes_perritos WHERE id_perrito = ? AND id_adoptante = ?';
+            
+            bd.query(sqlYaSePostulo, [ID_perrito, adoptante.id ], (err, resultYaSePostulo) => {
+                if(err) {
+                    console.log('Error al buscar postulacion', err);
+                    return res.status(500);
+                };
+                if(resultYaSePostulo.length > 0) {
+                    console.log('se emite mensaje')
+                    return res.status(400).json({ error: 'Este perrito ya fue postulado por este adoptante' });
+
+                } else {
+                    bd.query(sqlPostulacion, [ID_perrito, adoptante.id], (err, resultPostulacion) => {  //! Ingresamos el ID_perrito en la tabla adoptantes_perritos, donde se registran las postulaciones 
+                        if(err) {
+                            console.log('Error al insertar postulante', err);
+                            return res.status(500);
+                        };
+                        res.status(201).json({msg: 'La persona postulada para adoptar fue agregada exitosamente'});
+                    });
+                }
+            });          
+        };
+    }); 
 };
 
 const borrarPorIdAdoptante = (req, res) => {
