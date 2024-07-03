@@ -23,7 +23,7 @@ const { checkToken } = require('../middlewares/checkToken');
 
 //En cada solicitud se pasa la referencia a las funciones controlodaras, la ejecución se realiza automáticamente por Express cuando una solicitud coincide con la ruta definida. 
 
-perritosRouter.get("/", checkToken, perritosControllers.buscarTodos);
+perritosRouter.get("/", perritosControllers.buscarTodos);
 
 perritosRouter.get("/libre-en-proceso", perritosControllers.buscarLibreEnProceso);
 

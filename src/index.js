@@ -27,7 +27,7 @@ const sesionRouter = require('../routes/sesion.routes');
 const upload = require('../middlewares/multerconfig');
 
 //Definicion del puerto para el servidor
-const PUERTO = 3000;
+const PUERTO = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
@@ -46,7 +46,7 @@ app.use(express.urlencoded({ extended: true }));
 //Configuracion de cors para recibir solis desde el dominio http://127.0.0.1:5501
 
 app.use(cors({
-  origin: 'http://127.0.0.1:5501',  
+  origin: 'http://127.0.0.1:5501',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true // Permitir el intercambio de credenciales (cookies, tokens)
 }));
