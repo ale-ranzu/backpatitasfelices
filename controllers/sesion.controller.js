@@ -45,9 +45,9 @@ const login = async (req, res) => {
                     nombre: usuario.nombre,
                     rol: usuario.rol,
                     createdAt: moment().unix(),
-                    //expiredAt: moment().add(5, 'minutes').unix()
+                    expiredAt: moment().add(5, 'minutes').unix()
                 }
-                const token = jwt.encode(payload, process.env.JWT_SECRET);
+                const token = jwt.encode(payload, 'secret');
                 return res.status(200).json({
                     message: 'Usuario logueado', token: token
                 });
