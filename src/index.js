@@ -46,7 +46,7 @@ app.use(express.urlencoded({ extended: true }));
 //Configuracion de cors para recibir solis desde el dominio http://127.0.0.1:5501
 
 app.use(cors({
-  origin: 'https://patitasfelices.fernandoviveros.net',
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true // Permitir el intercambio de credenciales (cookies, tokens)
 }));
