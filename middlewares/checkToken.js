@@ -13,7 +13,7 @@ const checkToken = (req, res, next) => {
     try {
         payload = jwt.decode(userToken, 'secret');
     } catch (err) {
-        return res.json({ error: 'Token incorrecto' });
+        return res.json({ error: 'Token incorrecto', err: err });
     }
 
     if (payload.expiredAt < moment().unix()) {
