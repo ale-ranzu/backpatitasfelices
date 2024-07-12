@@ -14,5 +14,4 @@ authRouter.get('/protected', authMiddleware, (req, res) => {
     res.json({ userId: req.userId });
 });
 
-
 module.exports = authRouter;
