@@ -3,10 +3,11 @@
 const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
-    host:"localhost",
-    user:"root", // Usuario de MySQL (por defecto 'root' en Laragon)
-    password:"", // Contraseña de MySQL (por defecto vacía en Laragon)
-    database:"patitas_felices_bd", // Nombre de la base de datos
+  host: process.env.BD_HOST,
+  user: process.env.BD_USER, 
+  password: process.env.BD_PASS, 
+  database: process.env.BD_NAME,
+  port: process.env.BD_PORT
 });
 
 // Conectar a la base de datos

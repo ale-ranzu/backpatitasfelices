@@ -17,7 +17,7 @@ const authRouter = require("../routes/auth.routes");
 const upload = require('../middlewares/multerconfig');
 
 //Definicion del puerto para el servidor
-const PUERTO = 3000;
+const PUERTO = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
